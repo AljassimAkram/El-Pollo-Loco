@@ -1,9 +1,9 @@
 class Endboss extends MovebaleObject {
     x = 3650;
-    y = 140;
+    y = 55;
     baseY = this.y;
-    width = 300;
-    height = 300;
+    width = 400;
+    height = 400;
 
     offset = {
         LEFT: 60,
@@ -23,8 +23,8 @@ class Endboss extends MovebaleObject {
     isAttacking = false;
     hasJumped = false;
     FOLLOW_SPEED = 0.5;
-    ATTACK_RANGE_X = 100;
-    ATTACK_RANGE_Y = 120;
+    ATTACK_RANGE_X = 150;
+    ATTACK_RANGE_Y = 180;
     ATTACK_SPEED_BASE = 0;
     IMAGES_WALKING = [
         "./assets/img/4_enemie_boss_chicken/1_walk/G1.png",
