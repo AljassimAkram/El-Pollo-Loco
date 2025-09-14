@@ -1,9 +1,9 @@
 class SmallChicken extends MovebaleObject {
     x = 1000 + Math.random() * (2000 - 400);
 
-    y = 370;
-    width = 60;
-    height = 60;
+    y = 375;
+    width = 50;
+    height = 50;
 
     speed = 0.2 + Math.random() * 0.25;
     damage = 5;

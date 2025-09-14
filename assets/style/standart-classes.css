@@ -77,7 +77,7 @@ button:hover {
 
 .overlay {
     position: absolute;
-    background-color: var(--bg-shadow);
+    background-color: black;
 
 }
 

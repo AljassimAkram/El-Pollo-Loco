@@ -1,8 +1,8 @@
 class Chicken extends MovebaleObject {
     x = 400 + Math.random() * (2000 - 400);
-    y = 370;
-    width = 60;
-    height = 60;
+    y = 340;
+    width = 80;
+    height = 80;
     speed = 0.3 + Math.random() * 0.25;
     damage = 5;
     chickenSound = new Audio("./assets/audio/chicken.mp3");
