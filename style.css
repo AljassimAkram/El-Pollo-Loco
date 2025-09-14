@@ -1,0 +1,156 @@
+@font-face {
+    font-family: 'Boogaloo';
+    src: url('./assets/fonts/Boogaloo-Regular.ttf');
+}
+
+
+html,
+body {
+    height: 100dvh;
+    overflow: hidden;
+
+}
+
+body {
+    background-image: url(./assets/img/bg-img-2.png);
+    background-size: cover;
+    background-position: center;
+}
+
+canvas {
+    display: block;
+    border-radius: 8px;
+
+}
+
+.game {
+    display: block;
+    position: relative;
+    max-width: var(--game-width);
+    height: var(--game-height);
+}
+
+.game-overlay {
+    position: absolute;
+    max-width: var(--game-width);
+    min-width: 100%;
+    max-height: var(--game-height);
+    min-height: 100%;
+    border-radius: 8px;
+}
+
+.btn-row {
+    position: absolute;
+    justify-content: space-evenly;
+    padding: 0 100px;
+    top: 40px;
+}
+
+.game-btn {
+    object-fit: cover;
+    height: 80px;
+}
+
+.start-button {
+    width: 160px;
+}
+
+
+
+
+.screen-btns {
+    position: absolute;
+    right: 8px;
+    bottom: 16px;
+}
+
+.screen-size img {
+    width: 32px;
+
+}
+
+.bg-circle {
+    background-color: var(--bg-shadow-white);
+    border-radius: 50%;
+}
+
+.turn-img {
+    width: 120px;
+    height: 120px;
+}
+
+.turn-msg {
+    gap: 24px
+}
+
+.mobile-action-btns {
+    position: absolute;
+    bottom: 8px;
+}
+
+.mobile-action-btn {
+    width: 48px;
+}
+
+.help-bar {
+    position: absolute;
+    bottom: 0px;
+    padding: 25px;
+    justify-content: space-around;
+    background-color: var(--bg-shadow-light);
+}
+
+.impressum-content {
+    background-color: var(--bg-shadow-light);
+    padding: 32px 16px 16px 16px;
+    border-radius: 8px;
+    text-align: left;
+    position: relative;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.impressum-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    margin-top: 0;
+}
+
+.btn-impressum{
+    cursor: pointer;
+}
+
+.btn-impressum:hover{
+    filter: brightness(1.1);
+}
+
+.icon {
+    width: 40px;
+}
+
+.mute-container {
+    position: absolute;
+    top: 8px;
+    right: 0;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.exit-btn {
+    font-size: 32px;
+}
+
+footer {
+    position: absolute;
+    display: flex;
+    gap: 8px;
+    bottom: 32px;
+
+}
+.href{
+    color: black;
+    padding: 0;
+    background-color: none;
+}
