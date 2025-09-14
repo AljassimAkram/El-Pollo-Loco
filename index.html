@@ -1,14 +1,190 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>El Pollo Loco</title>
+    <link rel="shortcut icon" href="./assets/img/2_character_pepe/1_idle/idle/I-1.png" type=" image/x-icon">
+    <link rel="stylesheet" href="./assets/style/standart-classes.css">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./assets/style/responsive.css">
+
+    <script src="./models/drawableObject.class.js"></script>
+    <script src="./models/movebale-object.class.js"></script>
+    <script src="./models/character.class.js"></script>
+    <script src="./models/chicken.class.js"></script>
+    <script src="./models/smal-chicken.class.js"></script>
+    <script src="./models/endboss.class.js"></script>
+
+    <script src="./models/statusbar.class.js"></script>
+    <script src="./models/healthbar.class.js"></script>
+    <script src="./models/bottlebar.class.js"></script>
+    <script src="./models/endbossbar.class.js"></script>
+    <script src="./models/coinbar.class.js"></script>
+
+    <script src="./models/sound-manager.class.js"></script>
+    <script src="./models/game-status.class.js"></script>
+    <script src="./models/world.class.js"></script>
+    <script src="./models/cloud.class.js"></script>
+    <script src="./models/throwableobject.class.js"></script>
+    <script src="./models/collectablebottleobject.class.js"></script>
+    <script src="./models/coin.class.js"></script>
+
+
+    <script src="./models/background.class.js"></script>
+    <script src="./models/keyboard.class.js"></script>
+
+    <script src="./models/game-over-msg.class.js"></script>
+    <script src="./models/win-msg.class.js"></script>
+    <script src="./models/level.class.js"></script>
+    <script src="./js/levels/level1.js"></script>
+
+
+    <script src="./js/game.js"></script>
 </head>
 
-<body>
+<body onload=" init()" class="center-column">
+    <div id="game" class="game w-100">
+        <img id="game-overlay" class="game-overlay" src="./assets/img/9_intro_outro_screens/start/startscreen_1.png"
+            alt="">
+
+        <canvas id="canvas" width="720" height="480" class="w-100 h-100"></canvas>
+
+        <div id="game-btns" class="d-flex w-100 btn-row">
+            <button id="play-btn" onclick="gameInit()" class="btn">
+                <img class="game-btn start-button" src="./assets/icons/start-button.png" alt="">
+            </button>
+            <button id="info-btn" onclick="toggleInfo()" class="btn d-none game-btn">
+                <img class="game-btn" src="./assets/icons/info.png" alt="">
+            </button>
+            <button id="menü-btn" onclick="init()" class="btn d-none game-btn">
+                <img class="game-btn" src="./assets/icons/home.png" alt="">
+            </button>
+        </div>
+
+        <div onclick="event.stopPropagation" id="help-bar" class="help-bar d-flex w-100 d-none">
+            <div class="center-column">
+                <img class="icon" src="./assets/icons/arrow-left.png" alt="">
+                <p>Move Left</p>
+            </div>
+            <div class="center-column">
+                <img class="icon" src="./assets/icons/arrow-right.png" alt="">
+                <p>Move Right</p>
+            </div>
+            <div class="center-column">
+                <div class="d-flex align-center gap-s">
+                    <img class="icon" src="./assets/icons/arrow-up.png" alt="">
+                    <p>OR</p>
+                    <img class="icon" src="./assets/icons/space.png" alt="">
+                </div>
+
+                <p>Jump</p>
+            </div>
+            <div class="center-column">
+                <img class="icon" src="./assets/icons/letter-d.png" alt="">
+                <p>Throw </p>
+            </div>
+
+            <div class="center-column btn-impressum">
+                <a onclick="toggleImpressum()">Impressum</a>
+            </div>
+
+        </div>
+
+        <div onclick="event.stopPropagation" id="screen-btns" class="screen-btns">
+            <button id="open-fullscreen-btn" onclick="fullscreen()" class="btn screen-size"> <img
+                    src="./assets/icons/fullscreen.png" alt=""></button>
+            <button id="close-fullscreen-btn" onclick="closeFullscreen()" class="btn screen-size d-none"> <img
+                    src="./assets/icons/exit-fullscreen.png" alt=""></button>
+        </div>
+
+        <div id="mute-container" class="mute-container">
+            <button id="enable-mute" onclick="saveMuteStatus('enable')" class="btn"> <img class="icon"
+                    src="./assets/icons/mute.png" alt=""></button>
+            <button id="disable-mute" onclick="saveMuteStatus('disable')" class="btn"> <img class="icon"
+                    src="./assets/icons/volume.png" alt=""></button>
+            </button>
+            <button id="exit-btn" onclick="exitGame()" class="btn exit-btn d-none"> <img class="icon"
+                    src="./assets/icons/exit.png" alt="exit"></button>
+        </div>
+
+        <div id="mobile-action-btns" class="d-flex justify-space-between mobile-action-btns d-none w-100">
+            <div>
+                <button ontouchstart="startUserAction('left', event)" ontouchend="endUserAction('left')" id="left-btn">
+                    <img class="btn mobile-action-btn" src="./assets/icons/arrow-left.png" alt="">
+                </button>
+
+                <button ontouchstart="startUserAction('right', event)" ontouchend="endUserAction('right')"
+                    id="right-btn">
+                    <img class="btn mobile-action-btn" src="./assets/icons/arrow-right.png" alt="">
+                </button>
+            </div>
+
+            <div>
+                <button ontouchstart="startUserAction('jump', event)" ontouchend="endUserAction('jump')" id="jump-btn">
+                    <img class="btn mobile-action-btn" src="./assets/icons/arrow-up.png" alt="">
+                </button>
+
+                <button ontouchstart="startUserAction('throw', event)" ontouchend="endUserAction('throw')"
+                    id="throw-btn">
+                    <img class="btn mobile-action-btn" src="./assets/icons/bottle.png" alt="">
+                </button>
+            </div>
+        </div>
+
+    </div>
 
 </body>
+
+<div id="turn-msg-overlay" class="overlay turn-msg hide center-column w-100 h-100">
+    <div class="bg-circle">
+        <img class="turn-img" src="./assets/icons/turn-device.png" alt="">
+    </div>
+    <span>Please turn your Device!</span>
+</div>
+
+<div id="impressum-overlay" onclick="toggleImpressum()" class="overlay d-none center-column w-100 h-100">
+    <div onclick="event.stopPropagation()" class="impressum-content">
+        <button onclick="toggleImpressum()" class="impressum-close"> <img class="icon" src="./assets/icons/exit.png"
+                alt="exit"> </button>
+        <h1>Impressum</h1>
+        <p>Angaben gemäß § 5 DDG</p>
+        <p>Akram Aljassim<br>
+            <br>
+            Isarring 29<br>
+            82515 Wolfratshausen <br>
+        </p>
+        <p> <strong>Vertreten durch: </strong><br>
+            Akram Al Jassim<br>
+        </p>
+        <p><strong>Kontakt:</strong> <br>
+            Telefon: 00491766864505-00491766864505<br>
+            E-Mail: <a class="href" href='mailto:Akramwljasem1995@gmail.com'>Akramwljasem1995@gmail.com</a></br></p>
+        <p><strong>Haftungsausschluss: </strong><br><br><strong>Datenschutz</strong><br><br>
+            Die Nutzung unserer Webseite ist in der Regel ohne Angabe personenbezogener Daten möglich. Soweit auf
+            unseren Seiten personenbezogene Daten (beispielsweise Name, Anschrift oder eMail-Adressen) erhoben werden,
+            erfolgt dies, soweit möglich, stets auf freiwilliger Basis. Diese Daten werden ohne Ihre ausdrückliche
+            Zustimmung nicht an Dritte weitergegeben. <br>
+            Wir weisen darauf hin, dass die Datenübertragung im Internet (z.B. bei der Kommunikation per E-Mail)
+            Sicherheitslücken aufweisen kann. Ein lückenloser Schutz der Daten vor dem Zugriff durch Dritte ist nicht
+            möglich. <br>
+            Der Nutzung von im Rahmen der Impressumspflicht veröffentlichten Kontaktdaten durch Dritte zur Übersendung
+            von nicht ausdrücklich angeforderter Werbung und Informationsmaterialien wird hiermit ausdrücklich
+            widersprochen. Die Betreiber der Seiten behalten sich ausdrücklich rechtliche Schritte im Falle der
+            unverlangten Zusendung von Werbeinformationen, etwa durch Spam-Mails, vor.<br>
+        </p><br>
+        Erstellt mit <a class="href" href="https://impressum-generator.de" rel="dofollow">Impressum-Generator.de</a>,
+        dem Tool für
+        Impressum und <a class="href" href="https://impressum-generator.de/datenschutz-generator"
+            rel="dofollow">Datenschutz-Erklärung</a>.
+        Nach einer Vorlage der <a class="href" href="https://www.kanzlei-hasselbach.de/" rel="dofollow">Kanzlei
+            Hasselbach</a>.
+    </div>
+</div>
+
+
+
+
 
 </html>
