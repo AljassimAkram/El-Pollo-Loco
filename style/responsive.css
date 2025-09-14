@@ -1,0 +1,53 @@
+@media only screen and (max-height:480px) {
+    .game {
+        height: 100%;
+    }
+
+    .game-overlay {
+        height: 100%;
+    }
+
+    .play {
+        top: 24px;
+    }
+
+    .play img {
+        width: 112px;
+        height: 48px;
+    }
+
+    canvas {
+        border-radius: unset;
+    }
+}
+
+
+@media only screen and (max-width:720px) and (display-mode: fullscreen) {
+    .play {
+        top: 24px;
+        scale: 1;
+    }
+}
+
+@media ((display-mode: fullscreen) and (min-width:720px)) {
+    .game-overlay {
+        max-width: 100%;
+    }
+
+    .play {
+        top: 88px;
+        scale: 2;
+    }
+
+    .play:hover {
+        scale: 2.1;
+    }
+
+    #open-fullscreen-btn {
+        display: none !important;
+    }
+
+    #close-fullscreen-btn {
+        display: block !important;
+    }
+}

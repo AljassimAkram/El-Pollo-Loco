@@ -1,0 +1,123 @@
+* {
+
+    scroll-behavior: smooth;
+    box-sizing: border-box;
+    margin: 0;
+    font-family: Boogaloo;
+    color: var(--yellow);
+
+
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-user-drag: none;
+    -moz-user-select: none;
+}
+
+:root {
+    --game-width: 1024px;
+    --game-height: 480px;
+    --yellow: rgba(255, 207, 17, 0.66);
+    --grey: rgba(211, 211, 211, 0.5);
+    --bg-shadow: rgba(0, 0, 0, 0.8);
+    --bg-shadow-light: rgba(0, 0, 0, 0.3);
+    --bg-shadow-white: rgba(255, 255, 255, 0.6)
+}
+
+a {
+    text-decoration: none;
+    background-color: #F4B503;
+    color: white;
+    padding: 8px;
+    border-radius: 8px;
+}
+
+button {
+    border: unset;
+    background: unset;
+
+}
+
+button:hover {
+    scale: 1.1;
+    cursor: pointer;
+}
+
+.d-none {
+    display: none !important;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.align-center {
+    align-items: center;
+}
+
+.justify-space-between {
+    justify-content: space-between;
+}
+
+.center-column {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.gap-s {
+    gap: 8px;
+}
+
+.hide {
+    bottom: -100vh;
+}
+
+.overlay {
+    position: absolute;
+    background-color: var(--bg-shadow);
+
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.h-100 {
+    height: 100%;
+}
+
+
+section {
+    margin-top: 36px;
+}
+
+h2,
+h3,
+h4 {
+    margin-top: 16px;
+}
+
+p {
+    margin-top: 8px;
+}
+
+.container {
+    margin-bottom: 64px;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
