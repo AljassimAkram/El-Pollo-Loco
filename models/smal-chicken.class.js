@@ -45,4 +45,10 @@ class SmallChicken extends MovebaleObject {
             }
         }, 1000 / 10);
     }
+
+    hit() {
+        this.energy = 0;
+        this.playAnimation(this.IMAGES_DEAD);
+    }
+
 }

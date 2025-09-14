@@ -1,6 +1,8 @@
-class Bottle extends DrawableObject {
+class Bottle extends MovebaleObject {
     x = 400 + Math.random() * (2000 - 400);
-    y = 330;
+    y = 340;
+    height = 80;
+    width = 80;
     offset = { ...this.offset, LEFT: 40 };
 
     IMAGES_BOTTLE = [
@@ -9,9 +11,17 @@ class Bottle extends DrawableObject {
     ];
 
     constructor() {
-        super();
+        super().loadImage(
+            "./assets/img/6_salsa_bottle/1_salsa_bottle_on_ground.png",
+        );
         this.loadImages(this.IMAGES_BOTTLE);
-        let path = this.IMAGES_BOTTLE[Math.floor(Math.random() * 2)];
-        this.img = this.imgChache[path];
+        this.animate();
+    }
+
+    animate() {
+        setInterval(() => {
+            this.playAnimation(this.IMAGES_BOTTLE);
+        }, 3000 / 10);
+
     }
 }

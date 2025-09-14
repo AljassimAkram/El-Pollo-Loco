@@ -57,4 +57,10 @@ class Chicken extends MovebaleObject {
         this.playAnimation(this.IMAGES_DEAD);
         this.chickenSound.pause();
     }
+
+    hit() {
+        this.energy = 0;
+        this.playAnimation(this.IMAGES_DEAD);
+    }
+
 }
