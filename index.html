@@ -68,26 +68,28 @@
                 <img class="icon" src="./assets/icons/arrow-left.png" alt="">
                 <p>Move Left</p>
             </div>
+            <div class="key">|</div>
             <div class="center-column">
                 <img class="icon" src="./assets/icons/arrow-right.png" alt="">
                 <p>Move Right</p>
             </div>
+            <div class="key">|</div>
             <div class="center-column">
                 <div class="d-flex align-center gap-s">
                     <img class="icon" src="./assets/icons/arrow-up.png" alt="">
                     <p>OR</p>
-                    <img class="icon" src="./assets/icons/space.png" alt="">
+                    <div class="button-space">Space</div>
                 </div>
-
                 <p>Jump</p>
             </div>
+            <div class="key">|</div>
             <div class="center-column">
                 <img class="icon" src="./assets/icons/letter-d.png" alt="">
                 <p>Throw </p>
             </div>
-
+            <div class="key">|</div>
             <div class="center-column btn-impressum">
-                <a onclick="toggleImpressum()">Impressum</a>
+                <div onclick="toggleImpressum()" class="impressum">Impressum</div>
             </div>
 
         </div>
@@ -100,12 +102,12 @@
         </div>
 
         <div id="mute-container" class="mute-container">
-            <button id="enable-mute" onclick="saveMuteStatus('enable')" class="btn"> <img class="icon"
+            <button id="enable-mute" onclick="saveMuteStatus('enable')" class="btn"> <img class="icon-mute"
                     src="./assets/icons/mute.png" alt=""></button>
-            <button id="disable-mute" onclick="saveMuteStatus('disable')" class="btn"> <img class="icon"
+            <button id="disable-mute" onclick="saveMuteStatus('disable')" class="btn"> <img class="icon-mute"
                     src="./assets/icons/volume.png" alt=""></button>
             </button>
-            <button id="exit-btn" onclick="exitGame()" class="btn exit-btn d-none"> <img class="icon"
+            <button id="exit-btn" onclick="exitGame()" class="btn exit-btn d-none"> <img class="icon-mute"
                     src="./assets/icons/exit.png" alt="exit"></button>
         </div>
 
@@ -146,8 +148,8 @@
 
 <div id="impressum-overlay" onclick="toggleImpressum()" class="overlay d-none center-column w-100 h-100">
     <div onclick="event.stopPropagation()" class="impressum-content">
-        <button onclick="toggleImpressum()" class="impressum-close"> <img class="icon" src="./assets/icons/exit.png"
-                alt="exit"> </button>
+        <button onclick="toggleImpressum()" class="impressum-close"> <img class="icon-mute"
+                src="./assets/icons/exit.png" alt="exit"> </button>
         <h1>Impressum</h1>
         <p>Angaben gemäß § 5 DDG</p>
         <p>Akram Aljassim<br>
@@ -178,6 +180,7 @@
         dem Tool für
         Impressum und <a class="href" href="https://impressum-generator.de/datenschutz-generator"
             rel="dofollow">Datenschutz-Erklärung</a>.
+        <br></br>
         Nach einer Vorlage der <a class="href" href="https://www.kanzlei-hasselbach.de/" rel="dofollow">Kanzlei
             Hasselbach</a>.
     </div>

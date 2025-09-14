@@ -56,8 +56,6 @@ canvas {
 }
 
 
-
-
 .screen-btns {
     position: absolute;
     right: 8px;
@@ -89,24 +87,23 @@ canvas {
 }
 
 .mobile-action-btn {
-    width: 48px;
+    width: 100px;
 }
 
 .help-bar {
     position: absolute;
     bottom: 0px;
-    padding: 25px;
-    justify-content: space-around;
+    padding: 15px;
+    gap: 20px;
     background-color: var(--bg-shadow-light);
 }
 
 .impressum-content {
     background-color: var(--bg-shadow-light);
-    padding: 32px 16px 16px 16px;
-    border-radius: 8px;
-    text-align: left;
-    position: relative;
-    max-height: 80vh;
+    max-width: 700px;  
+    padding: 20px;      
+    margin: 0 auto;     
+    line-height: 1.6;
     overflow-y: auto;
 }
 
@@ -119,14 +116,44 @@ canvas {
 
 .btn-impressum{
     cursor: pointer;
+    background: linear-gradient(49deg, #E5921A, #F7C802);
+    padding: 10px;
+    height: 75px;
+    margin-top: 8px;
+    border-radius: 8px;
+    font-size: 28px;
+    
 }
 
 .btn-impressum:hover{
     filter: brightness(1.1);
 }
 
+.impressum{
+    color: white;
+}
+
 .icon {
+    width: 85px;
+}
+
+.icon-mute{
     width: 40px;
+}
+
+.key {
+    font-size: 80px;
+    font-family: auto;
+}
+
+
+.button-space{
+    background: linear-gradient(49deg, #E5921A, #F7C802);
+    color: white;
+    font-size: 2rem;
+    border-radius: 8px;
+    padding: 10px 73px;
+   
 }
 
 .mute-container {
@@ -151,6 +178,5 @@ footer {
 }
 .href{
     color: black;
-    padding: 0;
-    background-color: none;
+    padding: 8;
 }
