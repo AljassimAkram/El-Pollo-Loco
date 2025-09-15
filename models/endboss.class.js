@@ -87,7 +87,7 @@ class Endboss extends MovebaleObject {
     }
 
     isHurt() {
-        let timePassed = (new Date().getTime() - this.lastHit) / 2000;
+        let timePassed = (new Date().getTime() - this.lastHit) / 2500;
         return timePassed < 1.25;
     }
 
