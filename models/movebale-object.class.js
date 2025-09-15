@@ -83,10 +83,8 @@ class MovebaleObject extends DrawableObject {
      * @returns {boolean} True if the object was recently hurt, false otherwise.
      */
     isHurt() {
-        let timepassed = new Date().getTime() - this.lastHit;
-        timepassed = timepassed / 1000;
-
-        return timepassed < 1.25;
+        let timePassed = (new Date().getTime() - this.lastHit) / 100;
+        return timePassed < 1;
     }
 
     /**

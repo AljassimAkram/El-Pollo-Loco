@@ -172,7 +172,7 @@ class Character extends MovebaleObject {
    */
   handleJump() {
     if (this.world.keyboard.UP && !this.isAboveGround()) {
-      this.jump(105);
+      this.jump(110);
       this.playJumpAudio();
       this.lastMove = new Date().getTime();
     } else if (this.gravity == 0) {
@@ -206,6 +206,7 @@ class Character extends MovebaleObject {
     let cameraOffset = -this.x + 100;
     this.world.camera_x = Math.max(-maxCameraX, Math.min(60, cameraOffset));
   }
+
 
   /**
    * Handles the animation of the character based on their current state.
@@ -271,12 +272,16 @@ class Character extends MovebaleObject {
    * Plays the idle animation. The character may play a long idle animation if they are tired.
    */
   playIdleAnimation() {
-    if (this.getTired()) {
+    if (this.world.keyboard.THROW) {
+      this.slowAnimation(this.IMAGES_IDLE);
+      this.lastMove = new Date().getTime();
+    } else if (this.getTired()) {
       this.slowAnimation(this.IMAGES_LONG_IDLE);
     } else {
       this.slowAnimation(this.IMAGES_IDLE);
     }
   }
+
 
   /**
    * Plays the death animation when the character dies.

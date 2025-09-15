@@ -166,7 +166,7 @@ class World {
      * @returns {boolean} True if the character is falling on the enemy, false otherwise.
      */
     isFallingOnEnemy(enemy) {
-        return this.character.gravity < 0; //&& !(enemy instanceof Endboss);
+        return this.character.gravity < 0;
     }
 
     /**
@@ -183,11 +183,15 @@ class World {
      * @param {Enemy} enemy - The enemy dealing damage to the character.
     */
     handleDamageFromEnemy(enemy) {
-        let damage = enemy instanceof Endboss ? 10 : enemy.damage;
-        this.character.hit(damage);
-        this.healthbar.setPercentage(this.character.energy);
-        if (!enemy.isDead()) this.character.hasKilled = false;
+        if (!enemy.isDead()) {
+            let damage = enemy instanceof Endboss ? 10 : enemy.damage;
+            this.character.hit(damage);
+            this.healthbar.setPercentage(this.character.energy);
+            this.character.hasKilled = false;
+        }
+
     }
+
 
     /**
      * Checks for collisions between the character and throwable objects (e.g., bottles).
@@ -215,19 +219,22 @@ class World {
     }
 
     /**
-     * Checks for collisions between throwable objects and the endboss.
+     * Checks for collisions between throwable objects and the endboss and the Enemy.
      */
     checkEndbossCollisions() {
         this.level.throwableObjects.forEach((bottle) => {
-            let endboss = this.level.enemies[this.level.enemies.length - 1];
-            if (
-                bottle instanceof ThrowableObject &&
-                endboss.isColliding(bottle)
-            ) {
-                bottle.hit(bottle.damage);
-                endboss.hit(bottle.damage);
-                this.endbossbar.setPercentage(endboss.energy);
-            }
+            this.level.enemies.forEach((enemy) => {
+                if (bottle instanceof ThrowableObject && enemy.isColliding(bottle)) {
+                    bottle.hit(bottle.damage);
+                    if (enemy instanceof Endboss) {
+                        enemy.hit(bottle.damage);
+                        this.endbossbar.setPercentage(enemy.energy);
+                    } else {
+                        enemy.energy = 0;
+                        enemy.handleDeath();
+                    }
+                }
+            });
         });
     }
 
@@ -253,9 +260,9 @@ class World {
     addAllElements() {
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addToMap(this.level.clouds);
-        this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.level.throwableObjects);
         this.addObjectsToMap(this.level.coins);
+        this.addObjectsToMap(this.level.enemies);
         this.addToMap(this.character);
     }
 

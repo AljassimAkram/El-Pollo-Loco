@@ -90,4 +90,5 @@ class ThrowableObject extends MovebaleObject {
         this.splashSound.currentTime = 0.4;
         this.splashSound.play();
     }
+
 }

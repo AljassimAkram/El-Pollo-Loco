@@ -86,6 +86,11 @@ class Endboss extends MovebaleObject {
         setInterval(() => this.updateState(), 100);
     }
 
+    isHurt() {
+        let timePassed = (new Date().getTime() - this.lastHit) / 2000;
+        return timePassed < 1.25;
+    }
+
     /** Decides which state to handle. */
     updateState() {
         if (this.isDead()) return this.handleState("dead");
