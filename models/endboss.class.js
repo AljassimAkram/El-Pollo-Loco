@@ -24,6 +24,7 @@ class Endboss extends MovebaleObject {
     isAttacking = false;
     hasJumped = false;
     FOLLOW_SPEED = 1.5;
+    FOLLOW_SPEED_ON_SCREEN = 2;
     ATTACK_RANGE_X = 150;
     ATTACK_RANGE_Y = 180;
     ATTACK_SPEED_BASE = 0;
@@ -81,6 +82,7 @@ class Endboss extends MovebaleObject {
         this.applayGravity();
         this.chickenSound.volume = this.audioVolume;
         this.hitSound.volume = 1;
+        this.speed = this.FOLLOW_SPEED;
     }
 
     /** Starts the main animation loop. */
@@ -132,7 +134,7 @@ class Endboss extends MovebaleObject {
             this.attackInterval = null;
         }
         this.isAttacking = false;
-        this.speed = this.FOLLOW_SPEED;
+        this.setFollowSpeed();
     }
 
     /**
@@ -164,7 +166,7 @@ class Endboss extends MovebaleObject {
      */
     handleAlert() {
         this.playAnimation(this.IMAGES_ALERT);
-        this.speed = this.FOLLOW_SPEED;
+        this.setFollowSpeed();
     }
 
     /**
@@ -192,7 +194,7 @@ class Endboss extends MovebaleObject {
     handleWalking() {
         if (this.isAttacking) return;
         this.playAnimation(this.IMAGES_WALKING);
-        this.speed = this.FOLLOW_SPEED;
+        this.setFollowSpeed();
         if (!this.walkingInterval) this.startWalkingInterval();
     }
 
@@ -204,6 +206,7 @@ class Endboss extends MovebaleObject {
             if (!this.world) return;
             if (!this.hasSpottedPlayer && this.isOnScreen()) {
                 this.hasSpottedPlayer = true;
+                this.setFollowSpeed();
             }
             if (this.hasSpottedPlayer) {
                 this.followCharacter();
@@ -253,6 +256,15 @@ class Endboss extends MovebaleObject {
             this.x += this.speed;
             this.otherDirection = true;
         }
+    }
+
+    /**
+     * Adjusts the current movement speed based on whether the player is visible.
+    */
+    setFollowSpeed() {
+        this.speed = this.hasSpottedPlayer
+            ? this.FOLLOW_SPEED_ON_SCREEN
+            : this.FOLLOW_SPEED;
     }
 
     hit(damage) {
