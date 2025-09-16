@@ -7,7 +7,7 @@ class Chicken extends MovebaleObject {
     damage = 5;
     chickenSound = new Audio("./assets/audio/chicken.mp3");
     hitSound = new Audio("./assets/audio/chicken-noise.mp3");
-    roarSound = new Audio("./assets/audio/roar.wav");
+    roarSound = new Audio("./assets/audio/roar.mp3");
     audioVolume = 0.2;
     IMAGES_WALKING = [
         "./assets/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png",

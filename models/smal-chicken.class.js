@@ -10,7 +10,7 @@ class SmallChicken extends MovebaleObject {
 
     chickenSound = new Audio("./assets/audio/chicken.mp3");
     hitSound = new Audio("./assets/audio/eagle-squawking-type-1.mp3");
-    roarSound = new Audio("./assets/audio/roar.wav");
+    roarSound = new Audio("./assets/audio/roar.mp3");
     audioVolume = 0.2;
 
     IMAGES_WALKING = [

@@ -21,7 +21,7 @@ class Character extends MovebaleObject {
   hurtSound = new Audio("./assets/audio/hurt.mp3");
   deathSound = new Audio("./assets/audio/death.mp3");
   snoreSound = new Audio("./assets/audio/snores.mp3");
-  stompSound = new Audio("./assets/audio/roar.wav");
+  stompSound = new Audio("./assets/audio/roar.mp3");
 
   IMAGES_IDLE = [
     "./assets/img/2_character_pepe/1_idle/idle/I-1.png",

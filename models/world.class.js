@@ -36,7 +36,7 @@ class World {
      */
     initAudio() {
         this.victorySound = new Audio("./assets/audio/win.mp3");
-        this.defeatSound = new Audio("./assets/audio/lose.wav");
+        this.defeatSound = new Audio("./assets/audio/lose.mp3");
         this.victorySound.volume = 0.5;
         this.defeatSound.volume = 0.45;
         this.characterSounds = [
