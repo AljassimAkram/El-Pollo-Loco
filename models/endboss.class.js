@@ -90,11 +90,16 @@ class Endboss extends MovebaleObject {
         setInterval(() => this.updateState(), 100);
     }
 
+    /**
+     * Checks if the character is currently in the "hurt" state.
+     * Calculates the time passed since the last hit and compares it to 1.75 seconds.
+     * @returns {boolean} True if the character is still hurt, otherwise false.
+    */
     isHurt() {
         let timePassed = (new Date().getTime() - this.lastHit) / 1100;
         return timePassed < 1.75;
-
     }
+
 
     /** Decides which state to handle. */
     updateState() {
@@ -267,14 +272,15 @@ class Endboss extends MovebaleObject {
             : this.FOLLOW_SPEED;
     }
 
+    /**
+     * Deals damage and plays a hit sound if energy decreases.
+     * @param {number} damage
+    */
     hit(damage) {
-        const prev = this.energy;   // Energie vorher
-        super.hit(damage);          // Basisklasse (mit i-frames etc.)
-        if (this.energy < prev) {   // nur wenn wirklich Schaden
-            this.playHitSound();
-        }
+        const prev = this.energy;
+        super.hit(damage);
+        if (this.energy < prev) this.playHitSound();
     }
-
 
     /**
      * Plays the Endboss hit sound effect.

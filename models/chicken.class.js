@@ -64,6 +64,10 @@ class Chicken extends MovebaleObject {
         this.roarSound.pause();
     }
 
+    /**
+     * Sets the energy to 0 and plays the death animation 
+     * along with the corresponding sound effects.
+    */
     hit() {
         this.energy = 0;
         this.playAnimation(this.IMAGES_DEAD);
@@ -71,14 +75,21 @@ class Chicken extends MovebaleObject {
         this.playroarSound();
     }
 
+    /**
+     * Plays the chicken's hit sound effect.
+    */
     playHitSound() {
         this.hitSound.currentTime = 0;
         this.hitSound.play();
     }
-    playroarSound() {
 
+    /**
+     * Plays the chicken's roar sound effect.
+    */
+    playroarSound() {
         this.roarSound.currentTime = 0;
         this.roarSound.play();
     }
+
 
 }

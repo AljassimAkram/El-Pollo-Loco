@@ -19,13 +19,22 @@ class World {
 
     /**
      * Creates an instance of the World class.
-     * @param {HTMLCanvasElement} canvas - The canvas element where the game is drawn.
-     * @param {Keyboard} keyboard - The keyboard object to manage player input.
-     */
+     * @param {HTMLCanvasElement} canvas - Canvas where the game is drawn.
+     * @param {Keyboard} keyboard - Keyboard input handler.
+    */
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext("2d");
         this.canvas = canvas;
         this.keyboard = keyboard;
+        this.initAudio();
+        this.initManagers();
+        this.startGame();
+    }
+
+    /**
+     * Initializes all game audio (clips, volumes, sound lists).
+     */
+    initAudio() {
         this.victorySound = new Audio("./assets/audio/win.mp3");
         this.defeatSound = new Audio("./assets/audio/lose.wav");
         this.victorySound.volume = 0.5;
@@ -39,9 +48,14 @@ class World {
             this.character.snoreSound,
         ];
         this.statusSounds = [this.victorySound, this.defeatSound];
+    }
+
+    /**
+     * Initializes world managers and systems.
+     */
+    initManagers() {
         this.soundManager = new SoundManager(this);
         this.statusManager = new GameStatusManager(this);
-        this.startGame();
     }
 
     /**
@@ -118,9 +132,7 @@ class World {
     checkThrowAllowed() {
         return (
             this.character.bottleBag > 0 &&
-            this.level.throwableObjects.every(
-                (element) => !(element instanceof ThrowableObject)
-            )
+            this.level.throwableObjects.every((element) => !(element instanceof ThrowableObject))
         );
     }
 
@@ -141,9 +153,7 @@ class World {
      */
     checkEnemyCollisions() {
         this.level.enemies.forEach((enemy) => {
-            if (this.character.isColliding(enemy)) {
-                this.handleCollision(enemy);
-            }
+            if (this.character.isColliding(enemy)) { this.handleCollision(enemy); }
         });
     }
 
@@ -198,9 +208,7 @@ class World {
             this.healthbar.setPercentage(this.character.energy);
             this.character.hasKilled = false;
         }
-
     }
-
 
     /**
      * Checks for collisions between the character and throwable objects (e.g., bottles).
@@ -228,24 +236,35 @@ class World {
     }
 
     /**
-     * Checks for collisions between throwable objects and the endboss and the Enemy.
-     */
+     * Checks for collisions between throwable objects and enemies.
+     * Calls the appropriate handler if a collision occurs.
+    */
     checkEndbossCollisions() {
         this.level.throwableObjects.forEach((bottle) => {
             this.level.enemies.forEach((enemy) => {
                 if (bottle instanceof ThrowableObject && enemy.isColliding(bottle)) {
-                    bottle.hit(bottle.damage);
-                    if (enemy instanceof Endboss) {
-                        enemy.hit(bottle.damage);
-                        this.endbossbar.setPercentage(enemy.energy);
-                    } else {
-                        enemy.energy = 0;
-                        enemy.handleDeath();
-                        if (enemy.playHitSound) enemy.playHitSound();
-                    }
+                    this.handleBottleHitEnemy(bottle, enemy);
                 }
             });
         });
+    }
+
+    /**
+     * Handles the logic when a bottle collides with an enemy.
+     * Updates energy, triggers death/animations, and adjusts the endboss bar.
+     * @param {ThrowableObject} bottle - The thrown bottle object.
+     * @param {Enemy|Endboss} enemy - The enemy that was hit.
+     */
+    handleBottleHitEnemy(bottle, enemy) {
+        bottle.hit(bottle.damage);
+        if (enemy instanceof Endboss) {
+            enemy.hit(bottle.damage);
+            this.endbossbar.setPercentage(enemy.energy);
+        } else {
+            enemy.energy = 0;
+            enemy.handleDeath();
+            if (enemy.playHitSound) enemy.playHitSound();
+        }
     }
 
     /**
@@ -264,28 +283,21 @@ class World {
         requestAnimationFrame(() => this.draw());
     }
 
-    /**
-    * Plays the victory jingle when the player defeats the Endboss.
-    */
+    /** Plays the victory jingle when the player defeats the Endboss. */
     playVictorySound() {
         this.defeatSound.pause();
         this.victorySound.currentTime = 0;
         this.victorySound.play();
     }
 
-    /**
-     * Plays the defeat jingle when the player loses the game.
-     */
+    /** Plays the defeat jingle when the player loses the game. */
     playDefeatSound() {
         this.victorySound.pause();
         this.defeatSound.currentTime = 0;
         this.defeatSound.play();
     }
 
-
-    /**
-     * Adds all game elements (background, clouds, enemies, etc.) to the canvas.
-     */
+    /** Adds all game elements (background, clouds, enemies, etc.) to the canvas. */
     addAllElements() {
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addToMap(this.level.clouds);
@@ -295,10 +307,7 @@ class World {
         this.addToMap(this.character);
     }
 
-    /**
-     * Draws the status bars (health, bottles, coins, etc.) on the canvas.
-     */
-
+    /** Draws the status bars (health, bottles, coins, etc.) on the canvas. */
     drawStatusBars() {
         this.addToMap(this.healthbar);
         this.addToMap(this.bottelbar);
@@ -308,9 +317,7 @@ class World {
         this.addCoinCount();
     }
 
-    /**
-     * Draws the current coin count on the canvas.
-     */
+    /** Draws the current coin count on the canvas. */
     addCoinCount() {
         this.ctx.font = "24px 'Boogaloo', sans-serif";
         this.ctx.fillStyle = "white";

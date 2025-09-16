@@ -18,10 +18,14 @@ class Bottle extends MovebaleObject {
         this.animate();
     }
 
+    /**
+     * Starts the bottle animation.
+     * Plays the bottle frames at a fixed interval.
+    */
     animate() {
         setInterval(() => {
             this.playAnimation(this.IMAGES_BOTTLE);
-        }, 3000 / 10);
-
+        }, 300);
     }
+
 }

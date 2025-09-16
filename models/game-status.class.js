@@ -30,26 +30,38 @@ class GameStatusManager {
     }
 
     /**
-     * Handles the current game status:
-     *  Shows game over screen if character is dead.
-     *  Shows win screen if Endboss is dead.
-     */
+  * Handles the overall game status by checking
+  * for game over or victory conditions.
+  */
     handleGameStatus() {
-        if (this.checkGameOver()) {
-            if (!this.defeatSoundPlayed) {
-                this.world.playDefeatSound();
-                this.defeatSoundPlayed = true;
-            }
-            this.world.msg.y = 0;
-            this.stopGame(760);
-        } else if (this.checkWin()) {
-            if (!this.victorySoundPlayed) {
-                this.world.playVictorySound();
-                this.victorySoundPlayed = true;
-            }
-            this.world.winMsg.y = 0;
-            this.stopGame(1160);
+        if (this.checkGameOver()) this.handleGameOver();
+        else if (this.checkWin()) this.handleVictory();
+    }
+
+    /**
+     * Handles the game over state:
+     * plays defeat sound, shows message, and stops the game.
+     */
+    handleGameOver() {
+        if (!this.defeatSoundPlayed) {
+            this.world.playDefeatSound();
+            this.defeatSoundPlayed = true;
         }
+        this.world.msg.y = 0;
+        this.stopGame(760);
+    }
+
+    /**
+     * Handles the victory state:
+     * plays victory sound, shows win message, and stops the game.
+     */
+    handleVictory() {
+        if (!this.victorySoundPlayed) {
+            this.world.playVictorySound();
+            this.victorySoundPlayed = true;
+        }
+        this.world.winMsg.y = 0;
+        this.stopGame(1160);
     }
 
     /**

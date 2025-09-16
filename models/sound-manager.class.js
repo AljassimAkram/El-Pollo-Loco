@@ -26,66 +26,75 @@ class SoundManager {
     }
 
     /**
-     * Mutes all game sounds:
-     *  Background audio
-     *  Enemy sounds
-     *  Throwable object sounds
-     *  Character sounds
-     *  Background music
-     */
+  * Mutes all game sounds.
+  */
     muteSound() {
-        backgroundAudio.forEach(bgAudio => {
-            bgAudio.muted = true;
-        });
+        this.muteGlobalSounds();
+        this.muteWorldSounds();
+    }
+
+    /**
+     * Mutes global sounds such as background audio and music.
+     */
+    muteGlobalSounds() {
+        backgroundAudio.forEach(bgAudio => bgAudio.muted = true);
+        backgroundMusic.muted = true;
+    }
+
+    /**
+     * Mutes all sounds that belong to world objects
+     * (enemies, throwable objects, character, status).
+     */
+    muteWorldSounds() {
         this.world.level.enemies.forEach(enemy => {
             enemy.chickenSound.muted = true;
             if (enemy.hitSound) enemy.hitSound.muted = true;
             if (enemy.attackSound) enemy.attackSound.muted = true;
             if (enemy.roarSound) enemy.roarSound.muted = true;
         });
-        this.world.level.throwableObjects.forEach(throwableObject => {
-            if (throwableObject instanceof ThrowableObject)
-                throwableObject.splashSound.muted = true;
+
+        this.world.level.throwableObjects.forEach(obj => {
+            if (obj instanceof ThrowableObject) obj.splashSound.muted = true;
         });
-        this.world.characterSounds.forEach(character => {
-            character.muted = true;
-        });
-        this.world.statusSounds.forEach(sound => {
-            sound.muted = true;
-        });
-        backgroundMusic.muted = true;
+
+        this.world.characterSounds.forEach(s => s.muted = true);
+        this.world.statusSounds.forEach(s => s.muted = true);
     }
 
     /**
-     * Unmutes all game sounds:
-     *  Background audio
-     *  Enemy sounds
-     *  Throwable object sounds
-     *  Character sounds
-     *  Background music
-     */
+     * Unmutes all game sounds.
+    */
     unMuteSound() {
-        backgroundAudio.forEach(bgAudio => {
-            bgAudio.muted = false;
-        });
+        this.unMuteGlobalSounds();
+        this.unMuteWorldSounds();
+    }
+
+    /**
+     * Unmutes global sounds such as background audio and music.
+     */
+    unMuteGlobalSounds() {
+        backgroundAudio.forEach(bgAudio => bgAudio.muted = false);
+        backgroundMusic.muted = false;
+    }
+
+    /**
+     * Unmutes all sounds that belong to world objects
+     * (enemies, throwable objects, character, status).
+     */
+    unMuteWorldSounds() {
         this.world.level.enemies.forEach(enemy => {
             enemy.chickenSound.muted = false;
             if (enemy.hitSound) enemy.hitSound.muted = false;
             if (enemy.attackSound) enemy.attackSound.muted = false;
             if (enemy.roarSound) enemy.roarSound.muted = false;
         });
-        this.world.level.throwableObjects.forEach(throwableObject => {
-            if (throwableObject instanceof ThrowableObject)
-                throwableObject.splashSound.muted = false;
-        });
-        this.world.characterSounds.forEach(characterSound => {
-            characterSound.muted = false;
+
+        this.world.level.throwableObjects.forEach(obj => {
+            if (obj instanceof ThrowableObject) obj.splashSound.muted = false;
         });
 
-        this.world.statusSounds.forEach(sound => {
-            sound.muted = false;
-        });
-        backgroundMusic.muted = false;
+        this.world.characterSounds.forEach(s => s.muted = false);
+        this.world.statusSounds.forEach(s => s.muted = false);
     }
 
     /**

@@ -211,30 +211,36 @@ class Character extends MovebaleObject {
     this.world.camera_x = Math.max(-maxCameraX, Math.min(60, cameraOffset));
   }
 
+  /**
+   * Starts the animation logic.
+  */
+  handleAnimations() {
+    setInterval(() => this.applyAnimationForState(), 100);
+  }
 
   /**
-   * Handles the animation of the character based on their current state.
-   * This includes idle, walking, jumping, hurt, and dead animations.
-   */
-  handleAnimations() {
-    setInterval(() => {
-      if (this.isDead()) {
-        this.playDeathAnimation();
-        this.playDeathAudio();
-        this.stopSnoring();
-      } else if (this.allowedToAnimateHurt()) {
-        this.playHurtAnimation();
-        this.stopSnoring();
-      } else if (this.isAboveGround()) {
-        this.playAnimation(this.IMAGES_JUMPING);
-        this.stopSnoring();
-      } else if (this.allowedToAnimateWalking()) {
-        this.playAnimation(this.IMAGES_WALKING);
-        this.stopSnoring();
-      } else {
-        this.playIdleAnimation();
-      }
-    }, 1000 / 10);
+  * Determines the current animation state of the character.
+  * @returns {"dead"|"hurt"|"jump"|"walk"|"idle"} The current animation state.
+  */
+  getAnimationState() {
+    if (this.isDead()) return "dead";
+    if (this.allowedToAnimateHurt()) return "hurt";
+    if (this.isAboveGround()) return "jump";
+    if (this.allowedToAnimateWalking()) return "walk";
+    return "idle";
+  }
+
+  /**
+   * Executes the appropriate animation based on the current state.
+  */
+  applyAnimationForState() {
+    switch (this.getAnimationState()) {
+      case "dead": this.playDeathAnimation(); this.playDeathAudio(); this.stopSnoring(); break;
+      case "hurt": this.playHurtAnimation(); this.stopSnoring(); break;
+      case "jump": this.playAnimation(this.IMAGES_JUMPING); this.stopSnoring(); break;
+      case "walk": this.playAnimation(this.IMAGES_WALKING); this.stopSnoring(); break;
+      default: this.playIdleAnimation();
+    }
   }
 
   /**
@@ -293,7 +299,6 @@ class Character extends MovebaleObject {
     }
   }
 
-
   /**
    * Plays the death animation when the character dies.
    */
@@ -327,7 +332,6 @@ class Character extends MovebaleObject {
     if (item instanceof Bottle) this.bottleBag++;
     if (item instanceof Coin) this.coins++;
   }
-
 
   /**
    * Initializes custom character audio clips.

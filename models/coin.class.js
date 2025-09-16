@@ -15,10 +15,14 @@ class Coin extends MovebaleObject {
         this.animate();
     }
 
+    /**
+     * Starts the coin animation.
+     * Plays the coin frames at a fixed interval.
+    */
     animate() {
         setInterval(() => {
             this.playAnimation(this.IMAGES_COINS);
-        }, 3000 / 10);
-
+        }, 300);
     }
+
 }
