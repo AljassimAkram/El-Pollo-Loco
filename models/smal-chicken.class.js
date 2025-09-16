@@ -9,6 +9,8 @@ class SmallChicken extends MovebaleObject {
     damage = 5;
 
     chickenSound = new Audio("./assets/audio/chicken.mp3");
+    hitSound = new Audio("./assets/audio/eagle-squawking-type-1.mp3");
+    roarSound = new Audio("./assets/audio/roar.wav");
     audioVolume = 0.25;
 
     IMAGES_WALKING = [
@@ -30,6 +32,8 @@ class SmallChicken extends MovebaleObject {
         this.animate();
         this.moveLeft(this.speed);
         this.chickenSound.volume = this.audioVolume;
+        this.hitSound.volume = 0.35;
+        this.roarSound.volume = 0.35;
     }
 
     /**
@@ -49,6 +53,18 @@ class SmallChicken extends MovebaleObject {
     hit() {
         this.energy = 0;
         this.playAnimation(this.IMAGES_DEAD);
+        this.playHitSound();
+        this.playroarSound();
+    }
+
+    playHitSound() {
+        this.hitSound.currentTime = 0;
+        this.hitSound.play();
+    }
+    playroarSound() {
+
+        this.roarSound.currentTime = 0;
+        this.roarSound.play();
     }
 
 }

@@ -6,6 +6,8 @@ class Chicken extends MovebaleObject {
     speed = 0.3 + Math.random() * 0.25;
     damage = 5;
     chickenSound = new Audio("./assets/audio/chicken.mp3");
+    hitSound = new Audio("./assets/audio/chicken-noise.mp3");
+    roarSound = new Audio("./assets/audio/roar.wav");
     audioVolume = 0.2;
     IMAGES_WALKING = [
         "./assets/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png",
@@ -26,6 +28,8 @@ class Chicken extends MovebaleObject {
         this.animate();
         this.moveLeft(this.speed);
         this.chickenSound.volume = this.audioVolume;
+        this.hitSound.volume = 0.35;
+        this.roarSound.volume = 0.35;
     }
 
     /**
@@ -56,11 +60,25 @@ class Chicken extends MovebaleObject {
     handleDeath() {
         this.playAnimation(this.IMAGES_DEAD);
         this.chickenSound.pause();
+        this.playHitSound();
+        this.playroarSound();
     }
 
     hit() {
         this.energy = 0;
         this.playAnimation(this.IMAGES_DEAD);
+        this.playHitSound();
+        this.playroarSound();
+    }
+
+    playHitSound() {
+        this.hitSound.currentTime = 0;
+        this.hitSound.play();
+    }
+    playroarSound() {
+
+        this.roarSound.currentTime = 0;
+        this.roarSound.play();
     }
 
 }

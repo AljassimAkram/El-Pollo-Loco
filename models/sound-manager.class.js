@@ -39,6 +39,8 @@ class SoundManager {
         });
         this.world.level.enemies.forEach(enemy => {
             enemy.chickenSound.muted = true;
+            if (enemy.hitSound) enemy.hitSound.muted = true;
+            if (enemy.attackSound) enemy.attackSound.muted = true;
         });
         this.world.level.throwableObjects.forEach(throwableObject => {
             if (throwableObject instanceof ThrowableObject)
@@ -46,6 +48,9 @@ class SoundManager {
         });
         this.world.characterSounds.forEach(character => {
             character.muted = true;
+        });
+        this.world.statusSounds.forEach(sound => {
+            sound.muted = true;
         });
         backgroundMusic.muted = true;
     }
@@ -64,6 +69,8 @@ class SoundManager {
         });
         this.world.level.enemies.forEach(enemy => {
             enemy.chickenSound.muted = false;
+            if (enemy.hitSound) enemy.hitSound.muted = false;
+            if (enemy.attackSound) enemy.attackSound.muted = false;
         });
         this.world.level.throwableObjects.forEach(throwableObject => {
             if (throwableObject instanceof ThrowableObject)
@@ -71,6 +78,10 @@ class SoundManager {
         });
         this.world.characterSounds.forEach(characterSound => {
             characterSound.muted = false;
+        });
+
+        this.world.statusSounds.forEach(sound => {
+            sound.muted = false;
         });
         backgroundMusic.muted = false;
     }
@@ -83,8 +94,8 @@ class SoundManager {
      */
     playAudio() {
         let randomNumber = Math.round(Math.random() * 2);
-        backgroundAudio[randomNumber].volume = 0.05;
-        backgroundMusic.volume = 0.2;
+        backgroundAudio[randomNumber].volume = 0.02;
+        backgroundMusic.volume = 0.04;
         backgroundAudio[randomNumber].play();
         backgroundMusic.play();
 

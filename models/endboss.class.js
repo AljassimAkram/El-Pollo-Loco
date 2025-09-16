@@ -15,6 +15,7 @@ class Endboss extends MovebaleObject {
     damage = 5;
     energy = 100;
     chickenSound = new Audio("./assets/audio/chicken.mp3");
+    hitSound = new Audio("./assets/audio/endboss-noise.mp3");
     audioVolume = 0.25;
     hasSpottedPlayer = false;
     walkingInterval = null;
@@ -22,7 +23,7 @@ class Endboss extends MovebaleObject {
     deadInterval = null;
     isAttacking = false;
     hasJumped = false;
-    FOLLOW_SPEED = 0.5;
+    FOLLOW_SPEED = 1.5;
     ATTACK_RANGE_X = 150;
     ATTACK_RANGE_Y = 180;
     ATTACK_SPEED_BASE = 0;
@@ -79,6 +80,7 @@ class Endboss extends MovebaleObject {
         this.animate();
         this.applayGravity();
         this.chickenSound.volume = this.audioVolume;
+        this.hitSound.volume = 1;
     }
 
     /** Starts the main animation loop. */
@@ -87,8 +89,9 @@ class Endboss extends MovebaleObject {
     }
 
     isHurt() {
-        let timePassed = (new Date().getTime() - this.lastHit) / 2500;
+        let timePassed = (new Date().getTime() - this.lastHit) / 1000;
         return timePassed < 1.25;
+
     }
 
     /** Decides which state to handle. */
@@ -251,4 +254,22 @@ class Endboss extends MovebaleObject {
             this.otherDirection = true;
         }
     }
+
+    hit(damage) {
+        const prev = this.energy;   // Energie vorher
+        super.hit(damage);          // Basisklasse (mit i-frames etc.)
+        if (this.energy < prev) {   // nur wenn wirklich Schaden
+            this.playHitSound();
+        }
+    }
+
+
+    /**
+     * Plays the Endboss hit sound effect.
+     */
+    playHitSound() {
+        this.hitSound.currentTime = 0;
+        this.hitSound.play();
+    }
+
 }

@@ -13,6 +13,7 @@ class World {
     msg = new GameOverMsg();
     winMsg = new WinMsg();
     characterSounds = [];
+    statusSounds = [];
     soundManager;
     statusManager;
 
@@ -25,12 +26,19 @@ class World {
         this.ctx = canvas.getContext("2d");
         this.canvas = canvas;
         this.keyboard = keyboard;
+        this.victorySound = new Audio("./assets/audio/win.mp3");
+        this.defeatSound = new Audio("./assets/audio/lose.wav");
+        this.victorySound.volume = 0.5;
+        this.defeatSound.volume = 0.45;
         this.characterSounds = [
             this.character.walkingSound,
             this.character.jumpingSound,
             this.character.hurtSound,
             this.character.deathSound,
+            this.character.stompSound,
+            this.character.snoreSound,
         ];
+        this.statusSounds = [this.victorySound, this.defeatSound];
         this.soundManager = new SoundManager(this);
         this.statusManager = new GameStatusManager(this);
         this.startGame();
@@ -175,6 +183,7 @@ class World {
      */
     handleFallingOnEnemy(enemy) {
         enemy.hit(this.character.damage);
+        this.character.playStompSound();
         if (enemy.isDead()) this.character.hasKilled = true;
     }
 
@@ -232,6 +241,7 @@ class World {
                     } else {
                         enemy.energy = 0;
                         enemy.handleDeath();
+                        if (enemy.playHitSound) enemy.playHitSound();
                     }
                 }
             });
@@ -253,6 +263,25 @@ class World {
         this.ctx.translate(-this.camera_x, 0);
         requestAnimationFrame(() => this.draw());
     }
+
+    /**
+    * Plays the victory jingle when the player defeats the Endboss.
+    */
+    playVictorySound() {
+        this.defeatSound.pause();
+        this.victorySound.currentTime = 0;
+        this.victorySound.play();
+    }
+
+    /**
+     * Plays the defeat jingle when the player loses the game.
+     */
+    playDefeatSound() {
+        this.victorySound.pause();
+        this.defeatSound.currentTime = 0;
+        this.defeatSound.play();
+    }
+
 
     /**
      * Adds all game elements (background, clouds, enemies, etc.) to the canvas.

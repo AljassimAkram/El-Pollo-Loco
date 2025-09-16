@@ -5,6 +5,8 @@ class GameStatusManager {
      */
     constructor(world) {
         this.world = world;
+        this.victorySoundPlayed = false;
+        this.defeatSoundPlayed = false;
     }
 
     /**
@@ -34,9 +36,17 @@ class GameStatusManager {
      */
     handleGameStatus() {
         if (this.checkGameOver()) {
+            if (!this.defeatSoundPlayed) {
+                this.world.playDefeatSound();
+                this.defeatSoundPlayed = true;
+            }
             this.world.msg.y = 0;
             this.stopGame(760);
         } else if (this.checkWin()) {
+            if (!this.victorySoundPlayed) {
+                this.world.playVictorySound();
+                this.victorySoundPlayed = true;
+            }
             this.world.winMsg.y = 0;
             this.stopGame(1160);
         }

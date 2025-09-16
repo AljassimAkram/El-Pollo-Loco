@@ -16,10 +16,12 @@ class Character extends MovebaleObject {
   coins = 0;
   energy = 100;
   damage = 100;
-  walkingSound = new Audio("./assets/audio/walk.mp3");
+  walkingSound = new Audio("../assets/audio/walk.mp3");
   jumpingSound = new Audio("./assets/audio/jump.mp3");
   hurtSound = new Audio("./assets/audio/hurt.mp3");
   deathSound = new Audio("./assets/audio/death.mp3");
+  snoreSound = new Audio("./assets/audio/snores.mp3");
+  stompSound = new Audio("./assets/audio/roar.wav");
 
   IMAGES_IDLE = [
     "./assets/img/2_character_pepe/1_idle/idle/I-1.png",
@@ -94,6 +96,7 @@ class Character extends MovebaleObject {
     this.loadImages(this.IMAGES_DEAD);
     this.animate();
     this.applayGravity();
+    this.initializeAudio();
   }
 
   /**
@@ -112,6 +115,7 @@ class Character extends MovebaleObject {
   handleMovement() {
     setInterval(() => {
       this.walkingSound.playbackRate = 1.5;
+      this.walkingSound.volume = 1.0;
       this.walkingSound.pause();
 
       if (!this.isDead()) {
@@ -217,12 +221,16 @@ class Character extends MovebaleObject {
       if (this.isDead()) {
         this.playDeathAnimation();
         this.playDeathAudio();
+        this.stopSnoring();
       } else if (this.allowedToAnimateHurt()) {
         this.playHurtAnimation();
+        this.stopSnoring();
       } else if (this.isAboveGround()) {
         this.playAnimation(this.IMAGES_JUMPING);
+        this.stopSnoring();
       } else if (this.allowedToAnimateWalking()) {
         this.playAnimation(this.IMAGES_WALKING);
+        this.stopSnoring();
       } else {
         this.playIdleAnimation();
       }
@@ -275,10 +283,13 @@ class Character extends MovebaleObject {
     if (this.world.keyboard.THROW) {
       this.slowAnimation(this.IMAGES_IDLE);
       this.lastMove = new Date().getTime();
+      this.stopSnoring();
     } else if (this.getTired()) {
       this.slowAnimation(this.IMAGES_LONG_IDLE);
+      this.startSnoring();
     } else {
       this.slowAnimation(this.IMAGES_IDLE);
+      this.stopSnoring();
     }
   }
 
@@ -315,5 +326,43 @@ class Character extends MovebaleObject {
   collect(item) {
     if (item instanceof Bottle) this.bottleBag++;
     if (item instanceof Coin) this.coins++;
+  }
+
+
+  /**
+   * Initializes custom character audio clips.
+   */
+  initializeAudio() {
+    this.snoreSound.loop = true;
+    this.snoreSound.volume = 0.45;
+    this.stompSound.volume = 1;
+  }
+
+  /**
+   * Starts the snoring loop when the character falls asleep.
+   */
+  startSnoring() {
+    if (this.snoreSound.paused) {
+      this.snoreSound.currentTime = 0;
+      this.snoreSound.play();
+    }
+  }
+
+  /**
+   * Stops the snoring sound if it is currently active.
+   */
+  stopSnoring() {
+    if (!this.snoreSound.paused) {
+      this.snoreSound.pause();
+      this.snoreSound.currentTime = 0;
+    }
+  }
+
+  /**
+   * Plays the stomp sound effect after defeating an enemy by jumping on it.
+   */
+  playStompSound() {
+    this.stompSound.currentTime = 0;
+    this.stompSound.play();
   }
 }
