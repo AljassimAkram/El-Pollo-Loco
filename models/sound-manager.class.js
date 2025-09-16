@@ -41,6 +41,7 @@ class SoundManager {
             enemy.chickenSound.muted = true;
             if (enemy.hitSound) enemy.hitSound.muted = true;
             if (enemy.attackSound) enemy.attackSound.muted = true;
+            if (enemy.roarSound) enemy.roarSound.muted = true;
         });
         this.world.level.throwableObjects.forEach(throwableObject => {
             if (throwableObject instanceof ThrowableObject)
@@ -71,6 +72,7 @@ class SoundManager {
             enemy.chickenSound.muted = false;
             if (enemy.hitSound) enemy.hitSound.muted = false;
             if (enemy.attackSound) enemy.attackSound.muted = false;
+            if (enemy.roarSound) enemy.roarSound.muted = false;
         });
         this.world.level.throwableObjects.forEach(throwableObject => {
             if (throwableObject instanceof ThrowableObject)

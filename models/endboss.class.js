@@ -13,7 +13,7 @@ class Endboss extends MovebaleObject {
     };
 
     damage = 5;
-    energy = 100;
+    energy = 115;
     chickenSound = new Audio("./assets/audio/chicken.mp3");
     hitSound = new Audio("./assets/audio/endboss-noise.mp3");
     audioVolume = 0.25;
@@ -23,7 +23,7 @@ class Endboss extends MovebaleObject {
     deadInterval = null;
     isAttacking = false;
     hasJumped = false;
-    FOLLOW_SPEED = 1.5;
+    FOLLOW_SPEED = 0.5;
     FOLLOW_SPEED_ON_SCREEN = 2;
     ATTACK_RANGE_X = 150;
     ATTACK_RANGE_Y = 180;
@@ -91,8 +91,8 @@ class Endboss extends MovebaleObject {
     }
 
     isHurt() {
-        let timePassed = (new Date().getTime() - this.lastHit) / 1000;
-        return timePassed < 1.25;
+        let timePassed = (new Date().getTime() - this.lastHit) / 1100;
+        return timePassed < 1.75;
 
     }
 

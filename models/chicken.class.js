@@ -28,8 +28,8 @@ class Chicken extends MovebaleObject {
         this.animate();
         this.moveLeft(this.speed);
         this.chickenSound.volume = this.audioVolume;
-        this.hitSound.volume = 0.35;
-        this.roarSound.volume = 0.35;
+        this.hitSound.volume = this.audioVolume;
+        this.roarSound.volume = this.audioVolume;
     }
 
     /**
@@ -60,8 +60,8 @@ class Chicken extends MovebaleObject {
     handleDeath() {
         this.playAnimation(this.IMAGES_DEAD);
         this.chickenSound.pause();
-        this.playHitSound();
-        this.playroarSound();
+        this.hitSound.pause();
+        this.roarSound.pause();
     }
 
     hit() {
