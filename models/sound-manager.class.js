@@ -9,20 +9,6 @@ class SoundManager {
     }
 
     /**
-     * Plays audio safely without throwing Promise errors.
-     * @param {HTMLAudioElement} audio - The audio object to play.
-    */
-    safePlay(audio) {
-        audio.currentTime = 0;
-        const p = audio.play();
-        if (p && typeof p.catch === "function") {
-            p.catch(() => {
-                // Fehler ignorieren, wenn play() unterbrochen wird
-            });
-        }
-    }
-
-    /**
      * Gets the mute status from localStorage.
      * @returns {boolean} True if muted, false otherwise.
      */

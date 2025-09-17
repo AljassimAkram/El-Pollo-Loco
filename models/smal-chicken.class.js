@@ -65,17 +65,6 @@ class SmallChicken extends MovebaleObject {
     }
 
     /**
-     * Kills the enemy by setting energy to 0
-     * and playing death animation and sounds.
-    */
-    hit() {
-        this.energy = 0;
-        this.playAnimation(this.IMAGES_DEAD);
-        this.playHitSound();
-        this.playroarSound();
-    }
-
-    /**
      * Plays the chicken's hit sound effect.
      */
     playHitSound() {
@@ -90,4 +79,17 @@ class SmallChicken extends MovebaleObject {
         this.roarSound.currentTime = 0;
         this.roarSound.play();
     }
+
+    /**
+     * Kills the enemy by setting energy to 0
+     * and playing death animation and sounds.
+    */
+    hit() {
+        this.energy = 0;
+        this.playAnimation(this.IMAGES_DEAD);
+        this.playHitSound();
+        this.playroarSound();
+    }
+
+
 }
