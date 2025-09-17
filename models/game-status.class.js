@@ -70,6 +70,9 @@ class GameStatusManager {
      * @param {number} time - The delay in milliseconds before stopping the game.
      */
     stopGame(time) {
+        if (this.world && this.world.character && this.world.character.stopAllAudio) {
+            this.world.character.stopAllAudio();
+        }
         setTimeout(() => {
             this.clearAllIntervals();
             document.getElementById("game-btns").classList.remove("d-none");

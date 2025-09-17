@@ -369,4 +369,24 @@ class Character extends MovebaleObject {
     this.stompSound.currentTime = 0;
     this.stompSound.play();
   }
+
+
+  /**
+   * Stops every active character sound and resets playback positions.
+   * Ensures that no character audio keeps playing after the game ends.
+   */
+  stopAllAudio() {
+    this.stopSnoring();
+    [
+      this.walkingSound,
+      this.jumpingSound,
+      this.hurtSound,
+      this.deathSound,
+      this.snoreSound,
+      this.stompSound,
+    ].forEach((sound) => {
+      sound.pause();
+      sound.currentTime = 0;
+    });
+  }
 }
