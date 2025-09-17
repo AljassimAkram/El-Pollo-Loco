@@ -5,6 +5,21 @@ class SoundManager {
      */
     constructor(world) {
         this.world = world;
+        this.audioTimeoutId = null;
+    }
+
+    /**
+     * Plays audio safely without throwing Promise errors.
+     * @param {HTMLAudioElement} audio - The audio object to play.
+    */
+    safePlay(audio) {
+        audio.currentTime = 0;
+        const p = audio.play();
+        if (p && typeof p.catch === "function") {
+            p.catch(() => {
+                // Fehler ignorieren, wenn play() unterbrochen wird
+            });
+        }
     }
 
     /**
@@ -98,12 +113,102 @@ class SoundManager {
     }
 
     /**
+    * Stops all audio playback and clears scheduled background audio.
+    */
+    stopAudio() {
+        this.clearAudioTimeout();
+        this.stopGlobalSounds();
+        this.stopWorldSounds();
+    }
+
+    /**
+     * Stops global background audio and music.
+     */
+    stopGlobalSounds() {
+        backgroundAudio.forEach((bgAudio) => this.resetAudioClip(bgAudio));
+        this.resetAudioClip(backgroundMusic);
+    }
+
+    /**
+     * Stops all sounds related to world objects and status clips.
+     */
+    stopWorldSounds() {
+        if (!this.world) return;
+
+        if (this.world.character) {
+            this.world.character.stopSnoring();
+        }
+
+        if (this.world.characterSounds) {
+            this.world.characterSounds.forEach((sound) =>
+                this.resetAudioClip(sound)
+            );
+        }
+
+        if (this.world.statusSounds) {
+            this.world.statusSounds.forEach((sound) =>
+                this.resetAudioClip(sound)
+            );
+        }
+
+        if (this.world.level) {
+            if (this.world.level.enemies) {
+                this.world.level.enemies.forEach((enemy) =>
+                    this.resetEnemySounds(enemy)
+                );
+            }
+
+            if (this.world.level.throwableObjects) {
+                this.world.level.throwableObjects.forEach((obj) => {
+                    if (obj instanceof ThrowableObject) {
+                        this.resetAudioClip(obj.splashSound);
+                    }
+                });
+            }
+        }
+    }
+
+    /**
+     * Resets a given audio clip by pausing it and rewinding to the start.
+     * @param {HTMLAudioElement} audio - The audio clip to reset.
+     */
+    resetAudioClip(audio) {
+        if (audio) {
+            audio.pause();
+            audio.currentTime = 0;
+        }
+    }
+
+    /**
+     * Stops all audio clips that belong to a specific enemy.
+     * @param {Enemy} enemy - The enemy whose sounds should be stopped.
+     */
+    resetEnemySounds(enemy) {
+        if (!enemy) return;
+        this.resetAudioClip(enemy.chickenSound);
+        this.resetAudioClip(enemy.hitSound);
+        this.resetAudioClip(enemy.attackSound);
+        this.resetAudioClip(enemy.roarSound);
+    }
+
+    /**
+     * Clears the scheduled timeout for background audio playback.
+     */
+    clearAudioTimeout() {
+        if (this.audioTimeoutId) {
+            clearTimeout(this.audioTimeoutId);
+            this.audioTimeoutId = null;
+        }
+    }
+
+    /**
      * Plays background audio and music:
      *  Randomly selects one of the background audio tracks
      *  Sets volumes for audio and music
      *  Repeats playback at random intervals (1s–5s)
      */
     playAudio() {
+        this.clearAudioTimeout();
         let randomNumber = Math.round(Math.random() * 2);
         backgroundAudio[randomNumber].volume = 0.02;
         backgroundMusic.volume = 0.04;
@@ -111,6 +216,6 @@ class SoundManager {
         backgroundMusic.play();
 
         let randomInterval = Math.floor(Math.random() * (5000 - 1000 + 1)) + 1000;
-        setTimeout(() => this.playAudio(), randomInterval);
+        this.audioTimeoutId = setTimeout(() => this.playAudio(), randomInterval);
     }
 }

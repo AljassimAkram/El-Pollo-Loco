@@ -46,6 +46,20 @@ class Chicken extends MovebaleObject {
     }
 
     /**
+     * Plays audio safely without throwing Promise errors.
+     * @param {HTMLAudioElement} audio - The audio object to play.
+     */
+    safePlay(audio) {
+        audio.currentTime = 0;
+        const p = audio.play();
+        if (p && typeof p.catch === "function") {
+            p.catch(() => {
+                // Fehler ignorieren, wenn play() unterbrochen wird
+            });
+        }
+    }
+
+    /**
      * Plays the chicken's sound effect.
      * The sound is played with a set volume level.
      */
@@ -60,8 +74,6 @@ class Chicken extends MovebaleObject {
     handleDeath() {
         this.playAnimation(this.IMAGES_DEAD);
         this.chickenSound.pause();
-        this.hitSound.pause();
-        this.roarSound.pause();
     }
 
     /**

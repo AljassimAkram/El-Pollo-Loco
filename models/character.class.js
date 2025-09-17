@@ -109,6 +109,20 @@ class Character extends MovebaleObject {
   }
 
   /**
+   * Plays audio safely without throwing Promise errors.
+   * @param {HTMLAudioElement} audio - The audio object to play.
+  */
+  safePlay(audio) {
+    audio.currentTime = 0;
+    const p = audio.play();
+    if (p && typeof p.catch === "function") {
+      p.catch(() => {
+        // Fehler ignorieren, wenn play() unterbrochen wird
+      });
+    }
+  }
+
+  /**
    * Handles the movement of the character, including walking, jumping, and interaction.
    * It is called every frame to update the character's position.
    */
@@ -277,8 +291,12 @@ class Character extends MovebaleObject {
    * Plays the hurt sound effect.
    */
   playHurtAudio() {
+    this.hurtSound.pause();
     this.hurtSound.currentTime = 0.4;
-    this.hurtSound.play();
+    const playPromise = this.hurtSound.play();
+    if (playPromise && typeof playPromise.catch === "function") {
+      playPromise.catch(() => { });
+    }
     this.hasPlayedAudio = true;
   }
 
@@ -307,9 +325,7 @@ class Character extends MovebaleObject {
     this.playAnimation(this.IMAGES_DEAD);
   }
 
-  /**
-   * Plays the death sound effect.
-   */
+  /** Plays the death sound effect.*/
   playDeathAudio() {
     this.deathSound.play();
   }
@@ -333,18 +349,14 @@ class Character extends MovebaleObject {
     if (item instanceof Coin) this.coins++;
   }
 
-  /**
-   * Initializes custom character audio clips.
-   */
+  /** Initializes custom character audio clips. */
   initializeAudio() {
     this.snoreSound.loop = true;
     this.snoreSound.volume = 0.45;
     this.stompSound.volume = 1;
   }
 
-  /**
-   * Starts the snoring loop when the character falls asleep.
-   */
+  /** Starts the snoring loop when the character falls asleep.*/
   startSnoring() {
     if (this.snoreSound.paused) {
       this.snoreSound.currentTime = 0;

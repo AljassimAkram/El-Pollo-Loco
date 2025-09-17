@@ -261,9 +261,8 @@ class World {
             enemy.hit(bottle.damage);
             this.endbossbar.setPercentage(enemy.energy);
         } else {
-            enemy.energy = 0;
-            enemy.handleDeath();
-            if (enemy.playHitSound) enemy.playHitSound();
+            enemy.hit(bottle.damage);
+            if (enemy.isDead()) enemy.handleDeath();
         }
     }
 

@@ -19,13 +19,19 @@ backgroundMusic.loop = true;
  * Sets up music and game status.
  */
 function setupGameStatus() {
+    if (world && world.soundManager) {
+        world.soundManager.stopAudio();
+    }
+    backgroundAudio.forEach((audio) => {
+        audio.pause();
+        audio.currentTime = 0;
+    });
     gameActive = false;
     backgroundMusic.pause();
     backgroundMusic.currentTime = 0;
     homeMusic.muted = getMuteStatus();
     homeMusic.volume = 0.2;
     homeMusic.play();
-
     checkGameActive();
     checkMuteStatus();
 }
@@ -164,8 +170,13 @@ function getMuteStatus() {
  * Exits the game by clearing intervals and reinitializing.
 */
 function exitGame() {
-    if (world && world.statusManager) {
-        world.statusManager.clearAllIntervals();
+    if (world) {
+        if (world.soundManager) {
+            world.soundManager.stopAudio();
+        }
+        if (world.statusManager) {
+            world.statusManager.clearAllIntervals();
+        }
     }
     init();
 }

@@ -51,9 +51,23 @@ class SmallChicken extends MovebaleObject {
     }
 
     /**
- * Kills the enemy by setting energy to 0
- * and playing death animation and sounds.
- */
+   * Plays audio safely without throwing Promise errors.
+   * @param {HTMLAudioElement} audio - The audio object to play.
+   */
+    safePlay(audio) {
+        audio.currentTime = 0;
+        const p = audio.play();
+        if (p && typeof p.catch === "function") {
+            p.catch(() => {
+                // Fehler ignorieren, wenn play() unterbrochen wird
+            });
+        }
+    }
+
+    /**
+     * Kills the enemy by setting energy to 0
+     * and playing death animation and sounds.
+    */
     hit() {
         this.energy = 0;
         this.playAnimation(this.IMAGES_DEAD);
