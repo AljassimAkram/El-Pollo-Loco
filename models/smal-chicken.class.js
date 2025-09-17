@@ -9,7 +9,6 @@ class SmallChicken extends MovebaleObject {
     damage = 5;
 
     chickenSound = new Audio("./assets/audio/chicken.mp3");
-    hitSound = new Audio("./assets/audio/eagle-squawking-type-1.mp3");
     roarSound = new Audio("./assets/audio/roar.mp3");
     audioVolume = 0.2;
 
@@ -32,7 +31,6 @@ class SmallChicken extends MovebaleObject {
         this.animate();
         this.moveLeft(this.speed);
         this.chickenSound.volume = this.audioVolume;
-        this.hitSound.volume = this.audioVolume;
         this.roarSound.volume = this.audioVolume;
     }
 
@@ -51,44 +49,21 @@ class SmallChicken extends MovebaleObject {
     }
 
     /**
-   * Plays audio safely without throwing Promise errors.
-   * @param {HTMLAudioElement} audio - The audio object to play.
-   */
-    safePlay(audio) {
-        audio.currentTime = 0;
-        const p = audio.play();
-        if (p && typeof p.catch === "function") {
-            p.catch(() => {
-                // Fehler ignorieren, wenn play() unterbrochen wird
-            });
-        }
-    }
-
-    /**
-     * Plays the chicken's hit sound effect.
-     */
-    playHitSound() {
-        this.hitSound.currentTime = 0;
-        this.hitSound.play();
-    }
-
-    /**
-     * Plays the chicken's roar sound effect.
-     */
-    playroarSound() {
-        this.roarSound.currentTime = 0;
-        this.roarSound.play();
-    }
-
-    /**
      * Kills the enemy by setting energy to 0
      * and playing death animation and sounds.
     */
     hit() {
         this.energy = 0;
         this.playAnimation(this.IMAGES_DEAD);
-        this.playHitSound();
         this.playroarSound();
+    }
+
+    /**
+   * Plays the chicken's roar sound effect.
+   */
+    playroarSound() {
+        this.roarSound.currentTime = 0;
+        this.roarSound.play();
     }
 
 

@@ -109,20 +109,6 @@ class Character extends MovebaleObject {
   }
 
   /**
-   * Plays audio safely without throwing Promise errors.
-   * @param {HTMLAudioElement} audio - The audio object to play.
-  */
-  safePlay(audio) {
-    audio.currentTime = 0;
-    const p = audio.play();
-    if (p && typeof p.catch === "function") {
-      p.catch(() => {
-        // Fehler ignorieren, wenn play() unterbrochen wird
-      });
-    }
-  }
-
-  /**
    * Handles the movement of the character, including walking, jumping, and interaction.
    * It is called every frame to update the character's position.
    */
@@ -130,7 +116,6 @@ class Character extends MovebaleObject {
     setInterval(() => {
       this.walkingSound.playbackRate = 1.5;
       this.walkingSound.volume = 1.0;
-      this.walkingSound.pause();
 
       if (!this.isDead()) {
         this.handleDirection();
@@ -202,7 +187,7 @@ class Character extends MovebaleObject {
    * Plays the jumping sound effect.
    */
   playJumpAudio() {
-    this.jumpingSound.currentTime = 1.3;
+    this.jumpingSound.currentTime = 1.0;
     this.jumpingSound.play();
   }
 
@@ -292,7 +277,7 @@ class Character extends MovebaleObject {
    */
   playHurtAudio() {
     this.hurtSound.pause();
-    this.hurtSound.currentTime = 0.4;
+    this.hurtSound.currentTime = 0.2;
     const playPromise = this.hurtSound.play();
     if (playPromise && typeof playPromise.catch === "function") {
       playPromise.catch(() => { });

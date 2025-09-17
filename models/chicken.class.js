@@ -6,7 +6,6 @@ class Chicken extends MovebaleObject {
     speed = 0.3 + Math.random() * 0.25;
     damage = 5;
     chickenSound = new Audio("./assets/audio/chicken.mp3");
-    hitSound = new Audio("./assets/audio/chicken-noise.mp3");
     roarSound = new Audio("./assets/audio/roar.mp3");
     audioVolume = 0.2;
     IMAGES_WALKING = [
@@ -28,7 +27,6 @@ class Chicken extends MovebaleObject {
         this.animate();
         this.moveLeft(this.speed);
         this.chickenSound.volume = this.audioVolume;
-        this.hitSound.volume = this.audioVolume;
         this.roarSound.volume = this.audioVolume;
     }
 
@@ -43,20 +41,6 @@ class Chicken extends MovebaleObject {
                 super.handleDeath();
             }
         }, 1000 / 10);
-    }
-
-    /**
-     * Plays audio safely without throwing Promise errors.
-     * @param {HTMLAudioElement} audio - The audio object to play.
-     */
-    safePlay(audio) {
-        audio.currentTime = 0;
-        const p = audio.play();
-        if (p && typeof p.catch === "function") {
-            p.catch(() => {
-                // Fehler ignorieren, wenn play() unterbrochen wird
-            });
-        }
     }
 
     /**
@@ -83,16 +67,7 @@ class Chicken extends MovebaleObject {
     hit() {
         this.energy = 0;
         this.playAnimation(this.IMAGES_DEAD);
-        this.playHitSound();
         this.playroarSound();
-    }
-
-    /**
-     * Plays the chicken's hit sound effect.
-    */
-    playHitSound() {
-        this.hitSound.currentTime = 0;
-        this.hitSound.play();
     }
 
     /**

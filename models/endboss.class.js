@@ -91,20 +91,6 @@ class Endboss extends MovebaleObject {
     }
 
     /**
-     * Plays audio safely without throwing Promise errors.
-     * @param {HTMLAudioElement} audio - The audio object to play.
-     */
-    safePlay(audio) {
-        audio.currentTime = 0;
-        const p = audio.play();
-        if (p && typeof p.catch === "function") {
-            p.catch(() => {
-                // Fehler ignorieren, wenn play() unterbrochen wird
-            });
-        }
-    }
-
-    /**
      * Checks if the character is currently in the "hurt" state.
      * Calculates the time passed since the last hit and compares it to 1.75 seconds.
      * @returns {boolean} True if the character is still hurt, otherwise false.

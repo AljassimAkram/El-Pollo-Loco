@@ -10,20 +10,6 @@ class GameStatusManager {
     }
 
     /**
-     * Plays audio safely without throwing Promise errors.
-     * @param {HTMLAudioElement} audio - The audio object to play.
-    */
-    safePlay(audio) {
-        audio.currentTime = 0;
-        const p = audio.play();
-        if (p && typeof p.catch === "function") {
-            p.catch(() => {
-                // Fehler ignorieren, wenn play() unterbrochen wird
-            });
-        }
-    }
-
-    /**
      * Checks if the player has won the game.
      * A win occurs when the Endboss is dead.
      * @returns {boolean} True if the Endboss is dead, otherwise false.
