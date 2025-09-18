@@ -89,11 +89,9 @@ class SoundManager {
             if (enemy.attackSound) enemy.attackSound.muted = false;
             if (enemy.roarSound) enemy.roarSound.muted = false;
         });
-
         this.world.level.throwableObjects.forEach(obj => {
             if (obj instanceof ThrowableObject) obj.splashSound.muted = false;
         });
-
         this.world.characterSounds.forEach(s => s.muted = false);
         this.world.statusSounds.forEach(s => s.muted = false);
     }
@@ -116,41 +114,56 @@ class SoundManager {
     }
 
     /**
-     * Stops all sounds related to world objects and status clips.
-     */
+     * Stops all sounds related to the current world.
+     * Delegates character/status sounds and level sounds to helper methods.
+    */
     stopWorldSounds() {
         if (!this.world) return;
 
+        this.stopCharacterAndStatusSounds();
+
+        if (this.world.level) {
+            this.stopLevelSounds(this.world.level);
+        }
+    }
+
+    /**
+     * Stops all character-related and status-related sounds in the world.
+     */
+    stopCharacterAndStatusSounds() {
+        if (!this.world) return;
         if (this.world.character) {
             this.world.character.stopSnoring();
         }
-
         if (this.world.characterSounds) {
             this.world.characterSounds.forEach((sound) =>
                 this.resetAudioClip(sound)
             );
         }
-
         if (this.world.statusSounds) {
             this.world.statusSounds.forEach((sound) =>
                 this.resetAudioClip(sound)
             );
         }
+    }
 
-        if (this.world.level) {
-            if (this.world.level.enemies) {
-                this.world.level.enemies.forEach((enemy) =>
-                    this.resetEnemySounds(enemy)
-                );
-            }
+    /**
+     * Stops all sounds associated with a given level,
+     * including enemies and throwable objects.
+     *
+     * @param {Object} level - The level containing enemies and objects.
+     */
+    stopLevelSounds(level) {
+        if (level.enemies) {
+            level.enemies.forEach((enemy) => this.resetEnemySounds(enemy));
+        }
 
-            if (this.world.level.throwableObjects) {
-                this.world.level.throwableObjects.forEach((obj) => {
-                    if (obj instanceof ThrowableObject) {
-                        this.resetAudioClip(obj.splashSound);
-                    }
-                });
-            }
+        if (level.throwableObjects) {
+            level.throwableObjects.forEach((obj) => {
+                if (obj instanceof ThrowableObject) {
+                    this.resetAudioClip(obj.splashSound);
+                }
+            });
         }
     }
 

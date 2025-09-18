@@ -1,13 +1,12 @@
 class Character extends MovebaleObject {
   width = 150;
-  height = 325;       // +45 Höhe
-  y = 110;       // = 110 -> Boden bleibt gleich
-
+  height = 325;
+  y = 110;
   offset = {
-    LEFT: 50,         // Breite unverändert -> gleich lassen
+    LEFT: 50,
     RIGHT: 50,
-    UP: 140 + 45,     // = 185 -> Hitbox oben gleich "tief" wie vorher
-    DOWN: 5           // unten unverändert
+    UP: 140 + 45,
+    DOWN: 5
   };
   baseY = this.y;
   speed = 7;

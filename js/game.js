@@ -19,9 +19,7 @@ backgroundMusic.loop = true;
  * Sets up music and game status.
  */
 function setupGameStatus() {
-    if (world && world.soundManager) {
-        world.soundManager.stopAudio();
-    }
+    if (world && world.soundManager) { world.soundManager.stopAudio(); }
     backgroundAudio.forEach((audio) => {
         audio.pause();
         audio.currentTime = 0;
@@ -114,7 +112,7 @@ function gameInit() {
     setLevel();
     hideUIElements();
     document.getElementById("exit-btn").classList.remove("d-none");
-    world = new World(canvas, keyboard);   
+    world = new World(canvas, keyboard);
 }
 
 
@@ -214,20 +212,16 @@ function checkGameActive() {
  */
 function checkOrientation(isPortrait) {
     portrait = isPortrait;
-
     const overlay = document.getElementById("turn-msg-overlay");
     const gameEl = document.getElementById("game");
-
     if (portrait) {
         overlay.classList.remove("hide");
-        // Aus Fullscreen raus (falls aktiv)
         if (document.fullscreenElement) {
             document.exitFullscreen().catch(() => { });
         }
-        gameEl.classList.remove("fill-viewport"); // Fallback aus
+        gameEl.classList.remove("fill-viewport");
     } else {
         overlay.classList.add("hide");
-        // Kein echtes FS hier, nur Fallback
         if (gameActive) gameEl.classList.add("fill-viewport");
     }
 }
@@ -248,29 +242,38 @@ function toggleImpressum() {
 }
 
 /**
- * Enables fullscreen mode for the game.
+ * Attempts to request fullscreen mode for the given element.
+ * Supports standard, WebKit, and MS-specific implementations.
+ *
+ * @param {HTMLElement} game - The game element to display in fullscreen.
+ * @returns {Promise<void>} A promise that resolves if fullscreen is activated,
+ *                          or rejects if not supported.
+ */
+function requestFullscreen(game) {
+    if (game.requestFullscreen) {
+        return game.requestFullscreen();
+    } else if (game.webkitRequestFullscreen) {
+        game.webkitRequestFullscreen();
+        return Promise.resolve();
+    } else if (game.msRequestFullscreen) {
+        game.msRequestFullscreen();
+        return Promise.resolve();
+    }
+    return Promise.reject();
+}
+
+/**
+ * Enables fullscreen mode for the game element.
+ * Falls back to applying the "fill-viewport" class if fullscreen fails.
  */
 function fullscreen() {
     const game = document.getElementById("game");
     if (document.fullscreenElement) return;
 
-    try {
-        if (game.requestFullscreen) {
-            game.requestFullscreen()
-                .then(() => game.classList.remove("fill-viewport"))
-                .catch(() => game.classList.add("fill-viewport")); // Fallback
-        } else if (game.webkitRequestFullscreen) {
-            game.webkitRequestFullscreen();
-            game.classList.remove("fill-viewport");
-        } else if (game.msRequestFullscreen) {
-            game.msRequestFullscreen();
-            game.classList.remove("fill-viewport");
-        }
-    } catch (_) {
-        game.classList.add("fill-viewport"); // Fallback
-    }
+    requestFullscreen(game)
+        .then(() => game.classList.remove("fill-viewport"))
+        .catch(() => game.classList.add("fill-viewport")); // Fallback
 }
-
 
 /**
  * Exits fullscreen mode if it is active.

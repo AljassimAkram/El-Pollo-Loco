@@ -1,12 +1,9 @@
 * {
-
     scroll-behavior: smooth;
     box-sizing: border-box;
     margin: 0;
     font-family: Boogaloo;
     color: var(--yellow);
-
-
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
@@ -76,10 +73,10 @@ button:hover {
 }
 
 .overlay {
-    position: fixed;   /* statt absolute → hängt am Viewport */
-    inset: 0;          /* ersetzt top/left/width/height */
+    position: fixed;   
+    inset: 0;          
     background-color: black;
-    z-index: 9999;     /* höher als alles andere */
+    z-index: 9999;    
 }
 
 .game:fullscreen {
