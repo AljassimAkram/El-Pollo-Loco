@@ -19,6 +19,17 @@
     canvas {
         border-radius: unset;
     }
+
+    .screen-btns {
+       position: unset;
+    }
+}
+
+@media only screen and (max-height:850px){
+   p {
+     font-size: 20px;
+     margin-top: 15px;
+   }
 }
 
 
@@ -26,6 +37,9 @@
     .play {
         top: 24px;
         scale: 1;
+    }
+    .screen-btns {
+       position: unset;
     }
 }
 

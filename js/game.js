@@ -114,8 +114,7 @@ function gameInit() {
     setLevel();
     hideUIElements();
     document.getElementById("exit-btn").classList.remove("d-none");
-    world = new World(canvas, keyboard);
-    fullscreen();
+    world = new World(canvas, keyboard);   
 }
 
 
