@@ -124,7 +124,6 @@ class MovebaleObject extends DrawableObject {
      */
     walkRight(speed) {
         this.x += speed;
-        this.walkingSound.play();
         this.world.firstInteraction = true;
     }
 
@@ -134,7 +133,6 @@ class MovebaleObject extends DrawableObject {
      */
     walkLeft(speed) {
         this.x -= speed;
-        this.walkingSound.play();
         this.world.firstInteraction = true;
     }
 
@@ -181,5 +179,14 @@ class MovebaleObject extends DrawableObject {
         setTimeout(() => {
             this.y = -1000;
         }, 100);
+    }
+
+    /**
+     * Safely play an Audio element without console errors on autoplay/pause races.
+    */
+    safePlay(audio) {
+        if (!audio || typeof audio.play !== "function") return;
+        const p = audio.play();
+        if (p && typeof p.catch === "function") p.catch(() => { });
     }
 }

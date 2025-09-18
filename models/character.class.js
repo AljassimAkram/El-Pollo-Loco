@@ -15,7 +15,7 @@ class Character extends MovebaleObject {
   coins = 0;
   energy = 100;
   damage = 100;
-  walkingSound = new Audio("../assets/audio/walk.mp3");
+  walkingSound = new Audio("./assets/audio/walk.mp3");
   jumpingSound = new Audio("./assets/audio/jump.mp3");
   hurtSound = new Audio("./assets/audio/hurt.mp3");
   deathSound = new Audio("./assets/audio/death.mp3");
@@ -96,6 +96,8 @@ class Character extends MovebaleObject {
     this.animate();
     this.applayGravity();
     this.initializeAudio();
+    this.walkingSound.loop = true;
+    this.walkingSound.volume = 1.0;
   }
 
   /**
@@ -130,8 +132,14 @@ class Character extends MovebaleObject {
    * It checks the keyboard input and moves the character accordingly.
    */
   handleDirection() {
-    if (this.canMoveRigth()) this.handleMoveRight();
-    if (this.canMoveLeft()) this.handleMoveLeft();
+    const movingRight = this.canMoveRigth();
+    const movingLeft = this.canMoveLeft();
+
+    if (movingRight) this.handleMoveRight();
+    if (movingLeft) this.handleMoveLeft();
+
+    if (movingRight || movingLeft) this.startWalkingSound();
+    else this.stopWalkingSound();
   }
 
   /**
@@ -187,7 +195,7 @@ class Character extends MovebaleObject {
    */
   playJumpAudio() {
     this.jumpingSound.currentTime = 1.0;
-    this.jumpingSound.play();
+    this.safePlay(this.jumpingSound);
   }
 
   /**
@@ -228,9 +236,7 @@ class Character extends MovebaleObject {
     return "idle";
   }
 
-  /**
-   * Executes the appropriate animation based on the current state.
-  */
+  /** Executes the appropriate animation based on the current state.*/
   applyAnimationForState() {
     switch (this.getAnimationState()) {
       case "dead": this.playDeathAnimation(); this.playDeathAudio(); this.stopSnoring(); break;
@@ -261,9 +267,7 @@ class Character extends MovebaleObject {
     return this.isHurt() && !this.hasKilled;
   }
 
-  /**
-   * Plays the hurt animation when the character gets hurt.
-   */
+  /** Plays the hurt animation when the character gets hurt. */
   playHurtAnimation() {
     this.playAnimation(this.IMAGES_HURT);
     if (!this.hasPlayedAudio) {
@@ -271,22 +275,15 @@ class Character extends MovebaleObject {
     }
   }
 
-  /**
-   * Plays the hurt sound effect.
-   */
+  /** Plays the hurt sound effect. */
   playHurtAudio() {
     this.hurtSound.pause();
     this.hurtSound.currentTime = 0.2;
-    const playPromise = this.hurtSound.play();
-    if (playPromise && typeof playPromise.catch === "function") {
-      playPromise.catch(() => { });
-    }
+    this.safePlay(this.hurtSound);
     this.hasPlayedAudio = true;
   }
 
-  /**
-   * Plays the idle animation. The character may play a long idle animation if they are tired.
-   */
+  /** Plays the idle animation. The character may play a long idle animation if they are tired. */
   playIdleAnimation() {
     if (this.world.keyboard.THROW) {
       this.slowAnimation(this.IMAGES_IDLE);
@@ -301,9 +298,7 @@ class Character extends MovebaleObject {
     }
   }
 
-  /**
-   * Plays the death animation when the character dies.
-   */
+  /** Plays the death animation when the character dies. */
   playDeathAnimation() {
     this.y += 20;
     this.playAnimation(this.IMAGES_DEAD);
@@ -311,7 +306,7 @@ class Character extends MovebaleObject {
 
   /** Plays the death sound effect.*/
   playDeathAudio() {
-    this.deathSound.play();
+    this.safePlay(this.deathSound);
   }
 
   /**
@@ -340,6 +335,27 @@ class Character extends MovebaleObject {
     this.stompSound.volume = 1;
   }
 
+  /**
+  * Starts the walking sound if it is not already playing.
+  * Uses safePlay() to avoid promise or autoplay errors.
+  */
+  startWalkingSound() {
+    if (this.walkingSound.paused) {
+      this.safePlay(this.walkingSound);
+    }
+  }
+
+  /**
+   * Stops the walking sound if it is currently playing
+   * and resets the playback position to the beginning.
+   */
+  stopWalkingSound() {
+    if (!this.walkingSound.paused) {
+      this.walkingSound.pause();
+      this.walkingSound.currentTime = 0;
+    }
+  }
+
   /** Starts the snoring loop when the character falls asleep.*/
   startSnoring() {
     if (this.snoreSound.paused) {
@@ -348,9 +364,7 @@ class Character extends MovebaleObject {
     }
   }
 
-  /**
-   * Stops the snoring sound if it is currently active.
-   */
+  /** Stops the snoring sound if it is currently active. */
   stopSnoring() {
     if (!this.snoreSound.paused) {
       this.snoreSound.pause();
@@ -358,14 +372,11 @@ class Character extends MovebaleObject {
     }
   }
 
-  /**
-   * Plays the stomp sound effect after defeating an enemy by jumping on it.
-   */
+  /** Plays the stomp sound effect after defeating an enemy by jumping on it. */
   playStompSound() {
     this.stompSound.currentTime = 0;
-    this.stompSound.play();
+    this.safePlay(this.stompSound);
   }
-
 
   /**
    * Stops every active character sound and resets playback positions.
