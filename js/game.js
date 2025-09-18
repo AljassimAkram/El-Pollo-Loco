@@ -31,7 +31,7 @@ function setupGameStatus() {
     backgroundMusic.currentTime = 0;
     homeMusic.muted = getMuteStatus();
     homeMusic.volume = 0.2;
-    homeMusic.play();
+    homeMusic.play().catch(() => { });
     checkGameActive();
     checkMuteStatus();
 }
@@ -115,7 +115,10 @@ function gameInit() {
     hideUIElements();
     document.getElementById("exit-btn").classList.remove("d-none");
     world = new World(canvas, keyboard);
+    fullscreen();
 }
+
+
 
 /**
  * Checks the current mute status and updates the visibility of mute/unmute UI elements accordingly.
@@ -213,12 +216,23 @@ function checkGameActive() {
 function checkOrientation(isPortrait) {
     portrait = isPortrait;
 
+    const overlay = document.getElementById("turn-msg-overlay");
+    const gameEl = document.getElementById("game");
+
     if (portrait) {
-        document.getElementById("turn-msg-overlay").classList.remove("hide");
+        overlay.classList.remove("hide");
+        // Aus Fullscreen raus (falls aktiv)
+        if (document.fullscreenElement) {
+            document.exitFullscreen().catch(() => { });
+        }
+        gameEl.classList.remove("fill-viewport"); // Fallback aus
     } else {
-        document.getElementById("turn-msg-overlay").classList.add("hide");
+        overlay.classList.add("hide");
+        // Kein echtes FS hier, nur Fallback
+        if (gameActive) gameEl.classList.add("fill-viewport");
     }
 }
+
 
 /**
  * Toggles the visibility of the help bar.
@@ -238,15 +252,26 @@ function toggleImpressum() {
  * Enables fullscreen mode for the game.
  */
 function fullscreen() {
-    let game = document.getElementById("game");
-    if (game.requestFullscreen) {
-        game.requestFullscreen();
-    } else if (game.webkitRequestFullscreen) {
-        game.webkitRequestFullscreen();
-    } else if (game.msRequestFullscreen) {
-        game.msRequestFullscreen();
+    const game = document.getElementById("game");
+    if (document.fullscreenElement) return;
+
+    try {
+        if (game.requestFullscreen) {
+            game.requestFullscreen()
+                .then(() => game.classList.remove("fill-viewport"))
+                .catch(() => game.classList.add("fill-viewport")); // Fallback
+        } else if (game.webkitRequestFullscreen) {
+            game.webkitRequestFullscreen();
+            game.classList.remove("fill-viewport");
+        } else if (game.msRequestFullscreen) {
+            game.msRequestFullscreen();
+            game.classList.remove("fill-viewport");
+        }
+    } catch (_) {
+        game.classList.add("fill-viewport"); // Fallback
     }
 }
+
 
 /**
  * Exits fullscreen mode if it is active.
