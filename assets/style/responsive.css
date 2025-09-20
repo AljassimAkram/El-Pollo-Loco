@@ -116,3 +116,16 @@
         display: block !important;
     }
 }
+
+@media ((display-mode: fullscreen) and (min-width:450px)) {
+   
+    .exit-btn {
+     font-size: 0;
+    }
+    .icon-mute {
+      width: 25px;
+    }
+    .mute-container{
+      flex-direction: column-reverse;
+    }
+}
